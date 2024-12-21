@@ -13,10 +13,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Build Docker Image
-        run: docker build -t echomimic_v2:build .
+        run: docker build -t gpt-sovits:build .
 
       # - name: Test Docker Image
-      #   run: docker run echomimic_v2:build npm test
+      #   run: docker run gpt-sovits:build npm test
 
   push_to_staging:
     needs: build
@@ -27,8 +27,8 @@ jobs:
 
       - name: Tag and Push Staging Image
         run: |
-          docker tag echomimic_v2:build ekrata/echomimic_v2:staging
-          docker push ekrata/echomimic_v2:staging
+          docker tag gpt-sovits:build ekrata/gpt-sovits:staging
+          docker push ekrata/gpt-sovits:staging
 
   publish_to_production:
     needs: push_to_staging
@@ -39,6 +39,6 @@ jobs:
 
       - name: Pull and Re-tag for Production
         run: |
-          docker pull ekrata/echomimic_v2:staging
-          docker tag ekrata/echomimic_v2:staging ekrata/echomimic_v2:latest
-          docker push ekrata/echomimic_v2:latest
+          docker pull ekrata/gpt-sovits:staging
+          docker tag ekrata/gpt-sovits:staging ekrata/gpt-sovits:latest
+          docker push ekrata/gpt-sovits:latest
