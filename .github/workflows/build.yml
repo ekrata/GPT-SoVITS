@@ -23,28 +23,12 @@ jobs:
       # - name: Test Docker Image
       #   run: docker run gpt-sovits:build npm test
 
-  push_to_staging:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
       - name: Pull and Tag Staging Image
         run: |
-          docker pull ekrata/gpt-sovits:build
           docker tag ekrata/gpt-sovits:build ekrata/gpt-sovits:staging
           docker push ekrata/gpt-sovits:staging
 
-  publish_to_production:
-    needs: push_to_staging
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
       - name: Pull and Re-tag for Production
         run: |
-          docker pull ekrata/gpt-sovits:staging
           docker tag ekrata/gpt-sovits:staging ekrata/gpt-sovits:latest
           docker push ekrata/gpt-sovits:latest
